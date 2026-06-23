@@ -1,18 +1,12 @@
-Project Overview
+Task 1: Exclusive Privileges Section
 
-Task 1:
-Exclusive Privileges Section Clone
+I recreated the ICICI Bank Exclusive Privileges section using HTML, CSS and Vanilla JavaScript.
 
-Task 2:
-Video Carousel & Chapter Generation
+Features:
+- Responsive design
+- Custom carousel
+- Touch swipe support
+- Autoplay
+- Navigation buttons
 
-Task 3:
-Lead Form Overlay
-
-Tech Used:
-HTML
-CSS
-JavaScript
-
-How To Run:
-Open index.html
+No external libraries were used.

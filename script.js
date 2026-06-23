@@ -1,10 +1,4 @@
-/**
- * ICICI Bank Credit Cards - Exclusive Privileges Slider Engine
- * Built with pure Vanilla JavaScript, HTML, and CSS (Zero Dependencies)
- * 
- * Replicates the exact 3D Coverflow effect, dynamic sizing, touch swiping, 
- * navigation buttons, autoplay, and responsive layout of Swiper.js.
- */
+// Exclusive Privileges Carousel
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("exclusiveSlider");
@@ -88,10 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /**
-   * Calculate 3D transforms for all slides based on the wrapper's translation.
-   * Replicates Swiper's 3D coverflow effect.
-   */
+  // Update slide positions
   function updateSlideTransforms(translate) {
     const centerOffset = (containerWidth - slideWidth) / 2;
 
