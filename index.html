@@ -2,79 +2,179 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="ICICI Bank Credit Cards - Exclusive Privileges replica built with pure HTML, CSS, and Vanilla JavaScript." />
-  <title>ICICI Bank Credit Cards - Exclusive Privileges</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive YouTube Video Carousel and Chapter Generator." />
+  <title>YouTube Video Carousel & Chapter Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Mulish Font family matches original website -->
-  <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main>
-    <!-- Exclusive Privileges Section Replica -->
-    <section class="exclusive" id="exclusivePrivilegesSection">
-      <div class="container p-0 p-md-3">
-        <h2>Exclusive Privileges</h2>
-        
-        <!-- Custom 3D Slider Container -->
-        <div class="swiper-container" id="exclusiveSlider">
-          <div class="swiper-wrapper" id="sliderWrapper">
-            
-            <!-- Slide 1: Ixigo Voucher -->
-            <div class="swiper-slide">
-              <div class="slide slide1">
-                <p>Get</p>
-                <h3>Activation voucher</h3>
-                <p>with <br />Flat ₹1,200/- off.</p>
-                <img src="assets/images/ixigo.webp" alt="logo ixigo" width="138" height="64" loading="lazy" />
-              </div>
+  <!-- Exclusive Privileges Section Replica -->
+  <section class="exclusive" id="exclusivePrivilegesSection">
+    <div class="container p-0 p-md-3">
+      <h2>Exclusive Privileges</h2>
+      
+      <!-- Custom 3D Slider Container -->
+      <div class="swiper-container" id="exclusiveSlider">
+        <div class="swiper-wrapper" id="sliderWrapper">
+          
+          <!-- Slide 1: Ixigo Voucher -->
+          <div class="swiper-slide">
+            <div class="slide slide1">
+              <p>Get</p>
+              <h3>Activation voucher</h3>
+              <p>with <br />Flat ₹1,200/- off.</p>
+              <img src="assets/images/ixigo.webp" alt="logo ixigo" width="138" height="64" loading="lazy" />
             </div>
-            
-            <!-- Slide 2: Reliance Digital Voucher -->
-            <div class="swiper-slide">
-              <div class="slide slide2">
-                <p>Get</p>
-                <h3>Activation voucher</h3>
-                <p>with up to<br /> ₹1,500/- off*.</p>
-                <img src="assets/images/reliance_digital.webp" alt="logo reliance digital" width="236" height="103" loading="lazy" />
-              </div>
-            </div>
-            
-            <!-- Slide 3: BookMyShow Benefits -->
-            <div class="swiper-slide">
-              <div class="slide slide3">
-                <h3>Enjoy Benefits</h3>
-                <p>worth up to <br />₹500/- off* <br />on your tickets.</p>
-                <img src="assets/images/bms.webp" alt="logo bookmyshow" width="226" height="67" loading="lazy" />
-                <em>*available on selected cards</em>
-              </div>
-            </div>
-            
-            <!-- Slide 4: Apple Offer -->
-            <div class="swiper-slide">
-              <div class="slide slide4">
-                <p>Avail</p>
-                <h3>APPLE OFFER</h3>
-                <p>with up to<br /> ₹7,000/- off</p>
-              </div>
-            </div>
-            
           </div>
           
-          <!-- Custom Navigation Arrows -->
-          <div class="swiper-button-prev" id="prevSlideButton" role="button" aria-label="Previous slide" tabindex="0"></div>
-          <div class="swiper-button-next" id="nextSlideButton" role="button" aria-label="Next slide" tabindex="0"></div>
+          <!-- Slide 2: Reliance Digital Voucher -->
+          <div class="swiper-slide">
+            <div class="slide slide2">
+              <p>Get</p>
+              <h3>Activation voucher</h3>
+              <p>with up to<br /> ₹1,500/- off*.</p>
+              <img src="assets/images/reliance_digital.webp" alt="logo reliance digital" width="236" height="103" loading="lazy" />
+            </div>
+          </div>
           
-          <!-- Custom Pagination Bullets (Visible on Mobile) -->
-          <div class="swiper-pagination" id="sliderPagination"></div>
+          <!-- Slide 3: BookMyShow Benefits -->
+          <div class="swiper-slide">
+            <div class="slide slide3">
+              <h3>Enjoy Benefits</h3>
+              <p>worth up to <br />₹500/- off* <br />on your tickets.</p>
+              <img src="assets/images/bms.webp" alt="logo bookmyshow" width="226" height="67" loading="lazy" />
+              <em>*available on selected cards</em>
+            </div>
+          </div>
+          
+          <!-- Slide 4: Apple Offer -->
+          <div class="swiper-slide">
+            <div class="slide slide4">
+              <p>Avail</p>
+              <h3>APPLE OFFER</h3>
+              <p>with up to<br /> ₹7,000/- off</p>
+            </div>
+          </div>
+          
         </div>
         
+        <!-- Custom Navigation Arrows -->
+        <div class="swiper-button-prev" id="prevSlideButton" role="button" aria-label="Previous slide" tabindex="0"></div>
+        <div class="swiper-button-next" id="nextSlideButton" role="button" aria-label="Next slide" tabindex="0"></div>
+        
+        <!-- Custom Pagination Bullets (Visible on Mobile) -->
+        <div class="swiper-pagination" id="sliderPagination"></div>
       </div>
-    </section>
+      
+    </div>
+  </section>
+
+  <header class="app-header">
+    <div class="header-container">
+      <h1 class="app-title">YouTube Chapter Toolkit</h1>
+      <p class="app-subtitle">Interactive Carousel & Chapter Timeline Generator</p>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="main-container">
+      
+      <!-- Interactive Video Hub -->
+      <section class="video-hub" aria-label="Video Player and Chapters">
+        <div class="glass-card hub-grid">
+          
+          <!-- Left Column: Video Carousel Player -->
+          <div class="player-container">
+            <div class="carousel-viewport">
+              <div class="video-wrapper">
+                <div id="youtube-player"></div>
+              </div>
+            </div>
+            
+            <!-- Carousel Controls -->
+            <div class="carousel-controls">
+              <button id="prevBtn" class="btn btn-secondary" aria-label="Previous Video">
+                <span class="arrow left-arrow"></span> Prev
+              </button>
+              <div class="carousel-indicators" id="carouselIndicators"></div>
+              <button id="nextBtn" class="btn btn-secondary" aria-label="Next Video">
+                Next <span class="arrow right-arrow"></span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Right Column: Chapters Panel -->
+          <div class="chapters-panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Video Chapters</h2>
+              <span class="video-badge" id="videoTitleBadge">Loading Video...</span>
+            </div>
+            
+            <div class="chapters-scroll" id="chaptersList" role="list">
+              <!-- Dynamically populated chapters -->
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- Chapter Generator Section -->
+      <section class="generator-section" aria-label="Chapter Generator">
+        <div class="glass-card">
+          <h2 class="section-title">Chapter Timeline Generator</h2>
+          <p class="section-desc">Enter a YouTube URL to retrieve suggested timestamps, chapter titles, and copyable JavaScript chapter configurations.</p>
+          
+          <div class="generator-form">
+            <input type="url" id="ytUrlInput" class="input-field" placeholder="https://www.youtube.com/watch?v=RJTCAL1DRro" required />
+            <button id="generateBtn" class="btn btn-primary">Parse Chapters</button>
+          
+          <!-- Loading State -->
+          <div class="loading-container idhidden" id="generatorLoader">
+            <div class="spinner"></div>
+            <p id="loaderStatus">Processing video URL...</p>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+          </div>
+
+          <!-- Output Panel -->
+          <div class="generator-output idhidden" id="generatorOutput">
+            <div class="output-grid">
+              
+              <!-- Suggested Chapters list -->
+              <div class="generated-preview">
+                <h3>Suggested Chapters</h3>
+                <div class="chapters-scroll" id="generatedChaptersList"></div>
+                <button id="loadVideoBtn" class="btn btn-secondary btn-full mt-3">Load Video & Chapters</button>
+              </div>
+
+              <!-- Reusable code block -->
+              <div class="code-panel">
+                <div class="code-header">
+                  <span>chapters.js</span>
+                  <button id="copyBtn" class="btn btn-copy">Copy Code</button>
+                </div>
+                <pre class="code-block"><code id="codeSnippet"></code></pre>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+    </div>
   </main>
-  
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>&copy; 2026 YouTube Chapter Toolkit. Designed for video management and integration.</p>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>

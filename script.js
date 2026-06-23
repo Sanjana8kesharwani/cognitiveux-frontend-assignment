@@ -1,5 +1,361 @@
-// Exclusive Privileges Carousel
+// Carousel viedo data
+const videoCarouselData = [
+  {
+    id: "RJTCAL1DRro",
+    title: "In That Quiet Earth - Hennur | Total Environment",
+    chapters: [
+      { time: 0, title: "Project Introduction & Design Concept" },
+      { time: 75, title: "Location Advantages Off Hennur Road" },
+      { time: 180, title: "L21 Villa Layout Walkthrough" },
+      { time: 320, title: "Terrace Gardens & Earthy Textures" },
+      { time: 460, title: "Amenities & Community Clubhouse" },
+      { time: 580, title: "Pricing & Customization Summary" }
+    ]
+  },
+  {
+    id: "jj_aUFX8SV8",
+    title: "After the Rain - Yelahanka | Total Environment",
+    chapters: [
+      { time: 0, title: "Introduction to Earth-Sheltered Villas" },
+      { time: 130, title: "Green Roofs & Thermal Insulation Features" },
+      { time: 330, title: "4 BHK Villa Internal Layout Walkthrough" },
+      { time: 525, title: "Central Courtyard & Natural Ventilation" },
+      { time: 740, title: "Sustainable Building Materials & Finishes" },
+      { time: 940, title: "Homeowner Testimonials & Community Life" }
+    ]
+  },
+  {
+    id: "xmmxkmVSiq0",
+    title: "Pursuit of a Radical Rhapsody - Whitefield | Total Environment",
+    chapters: [
+      { time: 0, title: "Project Overview & Lake-Facing Concept" },
+      { time: 110, title: "V40 Courtyard Home Layout Walkthrough" },
+      { time: 270, title: "Double-Height Living Spaces & Landscaping" },
+      { time: 435, title: "Lake Boardwalk & Community Amenities" },
+      { time: 585, title: "Construction Standards & Interior Details" },
+      { time: 730, title: "Summary, Location Benefits & Contact Info" }
+    ]
+  }
+];
 
+// Slider state
+let activeVideosList = [...videoCarouselData];
+let currentVideoIndex = 0;
+let ytPlayer = null;
+let playbackTimer = null;
+let generatedChapterData = null;
+
+
+// Load YouTube Player IFrame API script
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// Initialize player when IFrame API is cued
+window.onYouTubeIframeAPIReady = function() {
+  initPlayer(activeVideosList[currentVideoIndex].id);
+};
+
+function initPlayer(videoId) {
+  ytPlayer = new YT.Player('youtube-player', {
+    height: '100%',
+    width: '100%',
+    videoId: videoId,
+    playerVars: {
+      'playsinline': 1,
+      'rel': 0,
+      'modestbranding': 1,
+      'controls': 1
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerReady(event) {
+  renderChapters(activeVideosList[currentVideoIndex]);
+  renderCarouselIndicators();
+  startTimeMonitoring();
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    startTimeMonitoring();
+  } else {
+    stopTimeMonitoring();
+  }
+}
+
+// Chapters Displays & Monitoring
+
+function renderChapters(videoData) {
+  const container = document.getElementById("chaptersList");
+  container.innerHTML = "";
+  
+  document.getElementById("videoTitleBadge").textContent = videoData.title;
+
+  videoData.chapters.forEach((chapter, index) => {
+    const item = document.createElement("div");
+    item.className = "chapter-item";
+    item.setAttribute("role", "listitem");
+    item.dataset.time = chapter.time;
+    item.dataset.index = index;
+
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "chapter-time";
+    timeSpan.textContent = formatTime(chapter.time);
+
+    const titleSpan = document.createElement("span");
+    titleSpan.className = "chapter-title";
+    titleSpan.textContent = chapter.title;
+
+    item.appendChild(timeSpan);
+    item.appendChild(titleSpan);
+
+    // Jump player timeline to coordinate offset
+    item.addEventListener("click", () => {
+      if (ytPlayer && typeof ytPlayer.seekTo === "function") {
+        ytPlayer.seekTo(chapter.time, true);
+        ytPlayer.playVideo();
+      }
+    });
+
+    container.appendChild(item);
+  });
+}
+
+function startTimeMonitoring() {
+  stopTimeMonitoring();
+  playbackTimer = setInterval(() => {
+    if (ytPlayer && typeof ytPlayer.getCurrentTime === "function") {
+      const currentTime = Math.floor(ytPlayer.getCurrentTime());
+      highlightActiveChapter(currentTime);
+    }
+  }, 250);
+}
+
+function stopTimeMonitoring() {
+  if (playbackTimer) {
+    clearInterval(playbackTimer);
+    playbackTimer = null;
+  }
+}
+
+function highlightActiveChapter(time) {
+  const currentVideo = activeVideosList[currentVideoIndex];
+  const chapters = currentVideo.chapters;
+  let activeIndex = -1;
+
+  for (let i = 0; i < chapters.length; i++) {
+    const start = chapters[i].time;
+    const end = (i + 1 < chapters.length) ? chapters[i + 1].time : Infinity;
+
+    if (time >= start && time < end) {
+      activeIndex = i;
+      break;
+    }
+  }
+
+  const items = document.querySelectorAll("#chaptersList .chapter-item");
+  items.forEach((item, index) => {
+    if (index === activeIndex) {
+      if (!item.classList.contains("active")) {
+        item.classList.add("active");
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else {
+      item.classList.remove("active");
+    }
+  });
+}
+
+// Carousel Navigation
+
+function renderCarouselIndicators() {
+  const container = document.getElementById("carouselIndicators");
+  container.innerHTML = "";
+  activeVideosList.forEach((_, index) => {
+    const dot = document.createElement("div");
+    dot.className = `indicator ${index === currentVideoIndex ? 'active' : ''}`;
+    dot.addEventListener("click", () => navigateToVideo(index));
+    container.appendChild(dot);
+  });
+}
+
+function navigateToVideo(index) {
+  currentVideoIndex = index;
+  renderCarouselIndicators();
+  
+  const video = activeVideosList[currentVideoIndex];
+  renderChapters(video);
+
+  if (ytPlayer && typeof ytPlayer.cueVideoById === "function") {
+    ytPlayer.cueVideoById(video.id);
+  }
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  let index = currentVideoIndex - 1;
+  if (index < 0) index = activeVideosList.length - 1;
+  navigateToVideo(index);
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  let index = currentVideoIndex + 1;
+  if (index >= activeVideosList.length) index = 0;
+  navigateToVideo(index);
+});
+
+// Automatic Chapter Generator 
+
+const generateBtn = document.getElementById("generateBtn");
+const ytUrlInput = document.getElementById("ytUrlInput");
+const loader = document.getElementById("generatorLoader");
+const loaderStatus = document.getElementById("loaderStatus");
+const progressBar = document.getElementById("progressBar");
+const outputPanel = document.getElementById("generatorOutput");
+const codeSnippet = document.getElementById("codeSnippet");
+const generatedChaptersList = document.getElementById("generatedChaptersList");
+
+generateBtn.addEventListener("click", () => {
+  const url = ytUrlInput.value.trim();
+  if (!url) return;
+
+  const videoId = extractVideoId(url);
+  if (!videoId) {
+    alert("Invalid YouTube URL. Please verify and try again.");
+    return;
+  }
+
+  simulateChapterGeneration(videoId);
+});
+
+function extractVideoId(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+// Simulates speech structure timeline segment analysis in UI
+
+function simulateChapterGeneration(videoId) {
+  loader.classList.remove("idhidden");
+  outputPanel.classList.add("idhidden");
+  progressBar.style.width = "0%";
+  
+  const steps = [
+  { progress: 20, text: "Processing video URL..." },
+  { progress: 50, text: "Generating suggested chapters..." },
+  { progress: 80, text: "Building chapter timeline..." },
+  { progress: 95, text: "Preparing chapter data..." },
+  { progress: 100, text: "Success!" }
+];
+
+  let currentStep = 0;
+  
+  const interval = setInterval(() => {
+    if (currentStep < steps.length) {
+      loaderStatus.textContent = steps[currentStep].text;
+      progressBar.style.width = `${steps[currentStep].progress}%`;
+      currentStep++;
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        loader.classList.add("idhidden");
+        showGeneratedChapters(videoId);
+      }, 300);
+    }
+  }, 600);
+}
+
+//  Render preview of generated chapter details
+function showGeneratedChapters(videoId) {
+  const mockTitles = [
+    "Introduction & High-level Goals",
+    "Detailed Walkthrough of Features",
+    "Underlying Architecture & Layout Setup",
+    "Implementation & Code Demo",
+    "Common Edge Cases & Performance Tuning",
+    "Summary, Best Practices & Final Review"
+  ];
+  const mockOffsets = [0, 95, 220, 395, 530, 680];
+
+  generatedChapterData = {
+    id: videoId,
+    title: `Suggested Chapters (${videoId})`,
+    chapters: mockOffsets.map((time, idx) => ({
+      time: time,
+      title: mockTitles[idx]
+    }))
+  };
+
+  generatedChaptersList.innerHTML = "";
+  generatedChapterData.chapters.forEach((chapter) => {
+    const item = document.createElement("div");
+    item.className = "chapter-item";
+    
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "chapter-time";
+    timeSpan.textContent = formatTime(chapter.time);
+
+    const titleSpan = document.createElement("span");
+    titleSpan.className = "chapter-title";
+    titleSpan.textContent = chapter.title;
+
+    item.appendChild(timeSpan);
+    item.appendChild(titleSpan);
+    generatedChaptersList.appendChild(item);
+  });
+
+  // Output formatting
+  const codeString = `const chapters = [\n` + 
+    generatedChapterData.chapters.map(c => `  { time: ${c.time}, title: "${c.title}" }`).join(",\n") +
+    `\n];`;
+  
+  codeSnippet.textContent = codeString;
+  outputPanel.classList.remove("idhidden");
+  outputPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Load generated items to active carousel player
+document.getElementById("loadVideoBtn").addEventListener("click", () => {
+  if (!generatedChapterData) return;
+
+  const existingIndex = activeVideosList.findIndex(v => v.id === generatedChapterData.id);
+  if (existingIndex !== -1) {
+    currentVideoIndex = existingIndex;
+  } else {
+    activeVideosList.push(generatedChapterData);
+    currentVideoIndex = activeVideosList.length - 1;
+  }
+
+  navigateToVideo(currentVideoIndex);
+});
+
+// Copy code clip
+document.getElementById("copyBtn").addEventListener("click", () => {
+  const code = codeSnippet.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied!";
+    setTimeout(() => {
+      btn.textContent = "Copy Code";
+    }, 2000);
+  });
+});
+
+// Helper Utilities
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// --- TASK 1: EXCLUSIVE PRIVILEGES SLIDER ---
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("exclusiveSlider");
   const wrapper = document.getElementById("sliderWrapper");
@@ -28,14 +384,9 @@ document.addEventListener("DOMContentLoaded", () => {
     depth: 200
   };
 
-  /**
-   * Determine carousel configuration parameters based on screen width.
-   * Matches the exact breakpoints and values extracted from the original website.
-   */
   function updateConfig() {
     const width = window.innerWidth;
     if (width < 480) {
-      // Mobile Small
       config.slidesPerView = 1.2;
       config.spaceBetween = 60;
       config.rotate = 25;
@@ -65,10 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /**
-   * Recalculate container and slide widths based on active configurations.
-   * Resets margins and updates offsets.
-   */
+
   function updateLayout() {
     updateConfig();
     containerWidth = container.offsetWidth;
@@ -82,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Update slide positions
+ 
   function updateSlideTransforms(translate) {
     const centerOffset = (containerWidth - slideWidth) / 2;
 
@@ -93,7 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 2. Calculate the center point of the container relative to wrapper coordinates
       const containerCenter = -translate + containerWidth / 2;
 
-      // 3. Compute normalized offset from center (-1 represents one slide width left, +1 represents one slide width right)
+      // 3. Compute normalized offset from center 
       const offset = (slideCenter - containerCenter) / (slideWidth + config.spaceBetween);
 
       // Clamp offset for rotation and stretch overlays to prevent excessive displacement
@@ -126,8 +474,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Animate the carousel to a specific slide index.
-   * @param {number} index - Index of target slide
-   * @param {boolean} instant - Skip transitions (useful on resize)
+   * @param {number} index 
+   * @param {boolean} instant 
    */
   function goToSlide(index, instant = false) {
     currentIndex = index;
@@ -157,11 +505,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updatePagination();
   }
 
-  // --- PAGINATION INDICATORS ---
 
-  /**
-   * Render mobile slide indicator dots dynamically based on slide count.
-   */
+
+  // Render mobile slide indicator dots dynamically based on slide count.
+
   function buildPagination() {
     paginationContainer.innerHTML = "";
     slides.forEach((_, index) => {
@@ -296,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.addEventListener("click", () => {
     let prevIndex = currentIndex - 1;
     if (prevIndex < 0) {
-      prevIndex = slides.length - 1; // Loop back to end
+      prevIndex = slides.length - 1;
     }
     goToSlide(prevIndex);
     resetAutoplay();
@@ -305,13 +652,12 @@ document.addEventListener("DOMContentLoaded", () => {
   nextBtn.addEventListener("click", () => {
     let nextIndex = currentIndex + 1;
     if (nextIndex >= slides.length) {
-      nextIndex = 0; // Loop back to start
+      nextIndex = 0;
     }
     goToSlide(nextIndex);
     resetAutoplay();
   });
 
-  // --- KEYBOARD ACCESSIBILITY ---
 
   container.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") {
@@ -321,7 +667,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- DRAG / TOUCH EVENT LISTENERS ---
 
   // Touch triggers (Mobile/Tablet)
   container.addEventListener("touchstart", handleStart, { passive: false });
@@ -333,7 +678,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("mousemove", handleMove);
   window.addEventListener("mouseup", handleEnd);
 
-  // --- HOVER PAUSE CONTROLS ---
 
   container.addEventListener("mouseenter", () => {
     isHovered = true;
@@ -345,17 +689,15 @@ document.addEventListener("DOMContentLoaded", () => {
     startAutoplay();
   });
 
-  // --- WINDOW RESIZING ---
 
   window.addEventListener("resize", () => {
     updateLayout();
-    goToSlide(currentIndex, true); // Snap instantly during resize
+    goToSlide(currentIndex, true); 
   });
 
-  // --- INITIALIZATION ---
 
   updateLayout();
   buildPagination();
-  goToSlide(0, true); // Initialize first slide instantly
+  goToSlide(0, true);
   startAutoplay();
 });
