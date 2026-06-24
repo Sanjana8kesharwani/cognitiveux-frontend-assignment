@@ -849,3 +849,203 @@ body {
     font-size: 8px;
   }
 }
+
+/* --- TASK 3: LEAD CAPTURE SECTION --- */
+
+.lead-capture-section {
+  margin-top: 40px;
+}
+
+.lead-capture-section .section-desc {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.t3-player-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.t3-video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.t3-video-container iframe,
+.t3-video-container div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay - hidden by default */
+.t3-lead-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  z-index: 20;
+  border-radius: var(--radius-lg);
+}
+
+.t3-lead-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Form Card */
+.t3-lead-form-card {
+  background: rgba(22, 27, 38, 0.92);
+  border: 1px solid var(--card-border-color);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: var(--shadow-main);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.t3-lead-overlay.visible .t3-lead-form-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Close Button */
+.t3-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 26px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.t3-close-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Form Header */
+.t3-form-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+
+.t3-form-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+/* Input Groups */
+.t3-input-group {
+  margin-bottom: 14px;
+}
+
+.t3-input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.t3-input-group .input-field {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.t3-input-group .input-field::placeholder {
+  color: rgba(142, 156, 174, 0.5);
+}
+
+.t3-input-group .input-field:focus {
+  border-color: var(--accent-magenta);
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.15);
+}
+
+/* Success Message */
+.t3-success-msg {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.t3-success-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px auto;
+}
+
+.t3-success-msg h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+
+.t3-success-msg p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .t3-lead-form-card {
+    padding: 24px 18px;
+    max-width: 95%;
+  }
+
+  .t3-form-header h3 {
+    font-size: 17px;
+  }
+}

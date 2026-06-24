@@ -55,6 +55,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // Initialize player when IFrame API is cued
 window.onYouTubeIframeAPIReady = function() {
   initPlayer(activeVideosList[currentVideoIndex].id);
+  initTask3Player();
 };
 
 function initPlayer(videoId) {
@@ -435,27 +436,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const centerOffset = (containerWidth - slideWidth) / 2;
 
     slides.forEach((slide, index) => {
-      // 1. Calculate the center position of this specific slide
+        // Calculate slide position
       const slideCenter = index * (slideWidth + config.spaceBetween) + slideWidth / 2;
       
-      // 2. Calculate the center point of the container relative to wrapper coordinates
       const containerCenter = -translate + containerWidth / 2;
 
-      // 3. Compute normalized offset from center 
       const offset = (slideCenter - containerCenter) / (slideWidth + config.spaceBetween);
 
-      // Clamp offset for rotation and stretch overlays to prevent excessive displacement
       const clampedOffset = Math.max(-1, Math.min(1, offset));
 
-      // Calculate 3D rotations and depth translations
       const rotateY = -clampedOffset * config.rotate;
       const translateZ = -Math.abs(offset) * config.depth;
       const translateX = -clampedOffset * config.stretch;
 
-      // Smooth opacity scale (center slide is 1.0, outer slides approach 0.6)
       const opacity = 1 - Math.min(0.4, Math.abs(offset) * 0.4);
 
-      // Layer index: center slide is always on top (zIndex 100), outer slides layered underneath
       const zIndex = Math.round(100 - Math.abs(offset) * 10);
 
       // Apply styles to slide container
@@ -472,11 +467,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /**
-   * Animate the carousel to a specific slide index.
-   * @param {number} index 
-   * @param {boolean} instant 
-   */
+ // Move slider to selected slide
+
   function goToSlide(index, instant = false) {
     currentIndex = index;
 
@@ -611,14 +603,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- AUTOPLAY LOOP ---
 
   function startAutoplay() {
     stopAutoplay();
     autoplayTimer = setInterval(() => {
       let nextIndex = currentIndex + 1;
       if (nextIndex >= slides.length) {
-        nextIndex = 0; // Loop back
+        nextIndex = 0;
       }
       goToSlide(nextIndex);
     }, 2500);
@@ -700,4 +691,100 @@ document.addEventListener("DOMContentLoaded", () => {
   buildPagination();
   goToSlide(0, true);
   startAutoplay();
+});
+
+// --- TASK 3: LEAD CAPTURE FORM (6-second watch trigger) ---
+
+let t3Player = null;
+let t3WatchTimer = null;
+let t3WatchedSeconds = 0;
+let t3FormShown = false;
+let t3FormDismissed = false;
+
+/**
+ * Initialize Task 3's dedicated YouTube player.
+ * Called from onYouTubeIframeAPIReady.
+ */
+function initTask3Player() {
+  t3Player = new YT.Player('t3-youtube-player', {
+    height: '100%',
+    width: '100%',
+    videoId: 'RJTCAL1DRro',
+    playerVars: {
+      'playsinline': 1,
+      'rel': 0,
+      'modestbranding': 1,
+      'controls': 1
+    },
+    events: {
+      'onStateChange': onT3StateChange
+    }
+  });
+}
+
+//task-3
+// Track video play state
+function onT3StateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    startT3WatchTimer();
+  } else {
+    stopT3WatchTimer();
+  }
+}
+
+
+function startT3WatchTimer() {
+  if (t3FormShown || t3FormDismissed) return;
+  stopT3WatchTimer();
+
+  t3WatchTimer = setInterval(function() {
+    t3WatchedSeconds++;
+
+    if (t3WatchedSeconds >= 6) {
+      stopT3WatchTimer();
+      showT3LeadOverlay();
+    }
+  }, 1000);
+}
+
+function stopT3WatchTimer() {
+  if (t3WatchTimer) {
+    clearInterval(t3WatchTimer);
+    t3WatchTimer = null;
+  }
+}
+
+function showT3LeadOverlay() {
+  if (t3FormShown) return;
+  t3FormShown = true;
+
+  var overlay = document.getElementById('t3LeadOverlay');
+  overlay.classList.add('visible');
+}
+
+
+function hideT3LeadOverlay() {
+  t3FormDismissed = true;
+
+  var overlay = document.getElementById('t3LeadOverlay');
+  overlay.classList.remove('visible');
+}
+
+// Close button handler
+document.getElementById('t3CloseBtn').addEventListener('click', function() {
+  hideT3LeadOverlay();
+});
+
+// Form submission handler
+document.getElementById('t3LeadForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Hide form fields, show success message
+  this.classList.add('idhidden');
+  document.getElementById('t3SuccessMsg').classList.remove('idhidden');
+
+  // Auto-close overlay after 2.5 seconds
+  setTimeout(function() {
+    hideT3LeadOverlay();
+  }, 2500);
 });

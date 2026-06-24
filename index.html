@@ -166,6 +166,54 @@
         </div>
       </section>
 
+      <!-- Task 3: Interactive Watch & Lead Capture -->
+      <section class="lead-capture-section" aria-label="Lead Capture Video">
+        <div class="glass-card">
+          <h2 class="section-title">Exclusive Video Watch</h2>
+          <p class="section-desc">Start playing the video below. A brief project inquiry form will appear after 6 seconds of watch time.</p>
+          
+          <div class="t3-player-wrapper">
+            <!-- Task 3 Video Player -->
+            <div class="t3-video-container">
+              <div id="t3-youtube-player"></div>
+            </div>
+
+            <!-- Lead Capture Form Overlay -->
+            <div class="t3-lead-overlay" id="t3LeadOverlay">
+              <div class="t3-lead-form-card">
+                <button class="t3-close-btn" id="t3CloseBtn" aria-label="Close Form">&times;</button>
+                <div class="t3-form-header">
+                  <h3>Exclusive Project Inquiry</h3>
+                  <p>Submit your details to receive additional project files and pricing brochures.</p>
+                </div>
+                
+                <form id="t3LeadForm" class="t3-form-body">
+                  <div class="t3-input-group">
+                    <label for="t3Name">Full Name</label>
+                    <input type="text" id="t3Name" class="input-field" placeholder="John Doe" required />
+                  </div>
+                  <div class="t3-input-group">
+                    <label for="t3Email">Email Address</label>
+                    <input type="email" id="t3Email" class="input-field" placeholder="johndoe@example.com" required />
+                  </div>
+                  <div class="t3-input-group">
+                    <label for="t3Phone">Phone Number</label>
+                    <input type="tel" id="t3Phone" class="input-field" placeholder="+91 98765 43210" required />
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-full mt-3">Submit Inquiry</button>
+                </form>
+
+                <div class="t3-success-msg idhidden" id="t3SuccessMsg">
+                  <div class="t3-success-icon">✓</div>
+                  <h4>Inquiry Submitted!</h4>
+                  <p>Thank you for your interest. We will get in touch with you shortly.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
